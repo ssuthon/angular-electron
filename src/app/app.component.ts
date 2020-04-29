@@ -11,8 +11,7 @@ import { RfidReaderService } from './providers/rfid-reader.service';
 })
 export class AppComponent {
   constructor(
-    public electronService: ElectronService,
-    private rfidReaderService: RfidReaderService,
+    public electronService: ElectronService,    
     private translate: TranslateService
   ) {
     translate.setDefaultLang('en');
