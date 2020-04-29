@@ -2,9 +2,11 @@ import { app, BrowserWindow, screen } from 'electron';
 import * as path from 'path';
 import * as url from 'url';
 
+const conf = require('./conf/core');
+require('./conf/logger');
+require('./bridge');
+
 let win: BrowserWindow = null;
-const args = process.argv.slice(1),
-  serve = args.some(val => val === '--serve');
 
 function createWindow(): BrowserWindow {
 
@@ -19,11 +21,11 @@ function createWindow(): BrowserWindow {
     height: size.height,
     webPreferences: {
       nodeIntegration: true,
-      allowRunningInsecureContent: (serve) ? true : false,
+      allowRunningInsecureContent: (!conf.isProd) ? true : false,
     },
   });
 
-  if (serve) {
+  if (!conf.isProd) {
     require('electron-reload')(__dirname, {
       electron: require(`${__dirname}/node_modules/electron`)
     });
@@ -36,7 +38,7 @@ function createWindow(): BrowserWindow {
     }));
   }
 
-  if (serve) {
+  if (!conf.isProd) {
     win.webContents.openDevTools();
   }
 

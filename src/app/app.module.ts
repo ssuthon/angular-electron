@@ -18,6 +18,10 @@ import { HomeModule } from './home/home.module';
 import { DetailModule } from './detail/detail.module';
 
 import { AppComponent } from './app.component';
+import { ConsoleLoggerService } from './core/services/console-logger.service';
+import { ElectronLoggerService } from './core/services/electron-logger.service';
+import { AppConfig } from '../environments/environment';
+import { LoggerService } from './core/services/logger.service';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
@@ -43,7 +47,9 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
       }
     })
   ],
-  providers: [],
+  providers: [
+    { provide: LoggerService, useClass: AppConfig.production ? ElectronLoggerService : ConsoleLoggerService},
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {}
